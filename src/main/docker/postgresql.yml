@@ -1,0 +1,11 @@
+version: '2'
+services:
+  projectmanager-postgresql:
+    image: postgres:11.5
+    # volumes:
+    #     - ~/volumes/jhipster/projectManager/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=projectManager
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432
