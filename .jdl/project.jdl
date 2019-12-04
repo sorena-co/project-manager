@@ -1,0 +1,114 @@
+entity UserGroup{
+    title String required
+}
+
+entity Project{
+    title String required,
+    createDate Instant required,
+    projectType ProjectType required,
+    code String
+}
+
+entity FinancialProject{
+    title String,
+    code String,
+    name String,
+    sellContractNo String,
+    amount Long,
+    registerDate ZonedDateTime,
+    startDate ZonedDateTime,
+    finishDate ZonedDateTime,
+    description String,
+    financialProjectType FinancialProjectType
+}
+entity Phase{
+    title String,
+    percent Long,
+    startDate ZonedDateTime,
+    finishDate ZonedDateTime,
+    estimateStartDate ZonedDateTime,
+    estimateFinishDate ZonedDateTime,
+    cost Long,
+    reasonOfDelay String,
+    isFinish Boolean
+}
+entity Action{
+    title String,
+    doPercent Boolean,
+    finalPercent Boolean,
+    startDate ZonedDateTime,
+    finishDate ZonedDateTime,
+    estimateStartDate ZonedDateTime,
+    estimateFinishDate ZonedDateTime,
+    reasonOfDelay String,
+    isFinish Boolean
+}
+
+entity SellContract{
+    title String required,
+    sellContractNumber String required,
+    startDate ZonedDateTime,
+    finishDate ZonedDateTime,
+    registerDate ZonedDateTime
+}
+entity Moderator{
+    fullName String required,
+    fatherName String,
+    nationalCode String,
+    gender Gender,
+    birthDate ZonedDateTime
+}
+
+entity Contractor{
+    fullName String required,
+    contractorType ContractorType
+}
+
+enum ContractorType{
+    NATURAL,LEGAL
+}
+
+enum Gender{
+    MALE,FEMALE
+}
+
+
+
+enum FinancialProjectType{
+    CREDIT_ESTIMATES,
+    AMOUNT_CONFIRMED,
+    RECEIVED_FROM_INSTITUTION,
+    RECEIVED_FROM_ORGANIZATION,
+    RECEIVED_TOTAL_FOR_PROJECT,
+    SEND_TO_PROJECT_HAVE_CODE,
+    SURPLUS_COST,
+    CREDIT_REMAIN,
+    BEFORE_CLEARING,
+    IN_CLEARING,
+    FINAL_CLEARING,
+    DEBIT_TO_INSTITUTION
+}
+
+enum ProjectType {
+    SOFTWARE,
+    HARDWARE
+}
+
+
+relationship ManyToOne{
+    Project {parentProject(title)} to Project
+}
+
+relationship OneToMany{
+     Project { financialProject } to FinancialProject,
+     Project { phase(title) } to Phase,
+     Phase {action(title)} to Action,
+     Project { sellContract(title)} to SellContract,
+     SellContract { phase(title) } to Phase,
+     SellContract {moderator(fullName)} to Moderator,
+     SellContract {contractor(fullName)} to Contractor
+}
+
+dto * with mapstruct
+paginate * with pager
+service * with serviceClass
